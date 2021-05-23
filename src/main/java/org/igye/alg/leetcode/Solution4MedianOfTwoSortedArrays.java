@@ -1,21 +1,9 @@
 package org.igye.alg.leetcode;
 
 
-import java.util.function.BiFunction;
+import java.util.function.Function;
 
 class Solution4MedianOfTwoSortedArrays {
-    public boolean isSolution(int i, int[] a, int[] b) {
-        final Boundaries bnd = getBoundaries(i, a, b);
-        return bnd.aL <= bnd.bR && bnd.bL <= bnd.aR;
-    }
-
-    public int choseSolution(Pair range, int[] a, int[] b) {
-        if (range.left + 1 != range.right) {
-            throw new RuntimeException("range.left + 1 != range.right");
-        }
-        return isSolution(range.left, a, b) ? range.left : range.right;
-    }
-
     public int getJ(int i, int[] a, int[] b) {
         return (a.length + b.length) / 2 - i;
     }
@@ -50,29 +38,34 @@ class Solution4MedianOfTwoSortedArrays {
         }
         int[] a = nums1.length <= nums2.length ? nums1 : nums2;
         int[] b = a == nums1 ? nums2 : nums1;
-        int i = choseSolution(
-                binarySearch(0, a.length, (left, right) -> {
-                    final Boundaries bnd = getBoundaries(right.left, a, b);
-                    return bnd.aL > bnd.bR ? -1 : 1;
-                }),
-                a,
-                b
-        );
+        int i = binarySearch(0, a.length, x -> {
+            final Boundaries bnd = getBoundaries(x, a, b);
+            if (bnd.aL <= bnd.bR && bnd.bL <= bnd.aR) {
+                return 0;
+            } else {
+                return bnd.aL > bnd.bR ? -1 : 1;
+            }
+        });
         return getMedian(i, a, b);
     }
 
-    public Pair binarySearch(int min, int max, BiFunction<Pair,Pair,Integer> test) {
+    public int binarySearch(int min, int max, Function<Integer,Integer> test) {
         while (min < max) {
             int mid = (min + max) / 2;
-            Integer testResult = test.apply(new Pair(min,mid), new Pair(mid,max));
-            if (testResult < 0) {
+            int testResult = test.apply(mid);
+            if (testResult == 0) {
+                return mid;
+            } else if (testResult < 0) {
                 max = mid;
             } else {
-                if (min == mid) break;
-                min = mid;
+                if (min == mid) {
+                    return max;
+                } else {
+                    min = mid;
+                }
             }
         }
-        return new Pair(min,max);
+        return min;
     }
 
     public double findMedianSortedArray(int[] nums) {
@@ -99,16 +92,6 @@ class Solution4MedianOfTwoSortedArrays {
     public static void asrt(double expected, double actual) {
         if (expected != actual) {
             throw new RuntimeException("Expected " + expected + " but was " + actual);
-        }
-    }
-
-    private static class Pair {
-        int left;
-        int right;
-
-        public Pair(int left, int right) {
-            this.left = left;
-            this.right = right;
         }
     }
 
