@@ -5,11 +5,10 @@ import java.util.function.Function;
 public class Solution {
 
     public static void main(String[] args) {
-        double f = 0.12;
-        double s = 1-f;
-        int n = 10;
-        System.out.println(String.format("%.3f", sum(0,2, x -> choose(n,x)*Math.pow(f,x)*Math.pow(s,n-x))));
-        System.out.println(String.format("%.3f", sum(2,n, x -> choose(n,x)*Math.pow(f,x)*Math.pow(s,n-x))));
+        double la = 0.88;
+        double lb = 1.55;
+        System.out.println(String.format("%.3f", 160+40*(la+la*la)));
+        System.out.println(String.format("%.3f", 128+40*(lb+lb*lb)));
     }
 
     static double sum(int from, int to, Function<Integer, Double> function) {
