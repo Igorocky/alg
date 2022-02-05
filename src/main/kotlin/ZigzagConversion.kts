@@ -58,10 +58,12 @@ class Solution2 : ISolution {
 fun assertEquals(s: String, numRows: Int, expectedOutput: String) {
     val actual = Solution().convert(s, numRows)
     if (expectedOutput != actual) {
-        throw RuntimeException("""
+        throw RuntimeException(
+            """
             Expected: $expectedOutput
             Actual:   $actual
-            """.trimIndent())
+            """.trimIndent()
+        )
     }
 }
 
