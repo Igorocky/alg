@@ -7,7 +7,7 @@ class Solution {
             return 0
         }
 
-        val eqIdxs = IntRange(0,strs.size-2).toSet().toMutableSet()
+        val eqIdxs = IntRange(0,strs.size-2).toMutableSet()
         var c = 0
         var res = 0
         while (eqIdxs.isNotEmpty() && c < strs[0].length) {
